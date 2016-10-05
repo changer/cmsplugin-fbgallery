@@ -3,7 +3,7 @@
 {% if album %}
 <ul id="gallery-carousel" class="jcarousel jcarousel-skin-tango">
 {% for pic in album %}
-<li><a class="lightbox" href="{{ pic.src_big }}" title="{{ pic.name }}" rel="lightbox"><img src="{{ pic.src }}" alt="{{ pic.caption }}" />
+<li><a class="lightbox" href="{{ pic.source }}" title="{{ pic.name }}" rel="lightbox"><img src="{{ pic.picture }}" alt="{{ pic.caption }}" />
 </a></li>
 {% endfor %}
 </ul>
