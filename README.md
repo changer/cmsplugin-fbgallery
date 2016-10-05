@@ -16,21 +16,22 @@ Add the following line into your `requirements.txt` file:
 ```bash
 https://github.com/changer/cmsplugin-fbgallery/archive/v1.0.2.zip
 ```
-And add the page id in your settings file:
+And add the Facebook App ID and Secret in your settings file:
 
 ```py
 INSTALLED_APPS = (
                   `cmsplugin_fbgallery`,
                   )
                   
-FB_PAGE_ID = '125976107506398'# Get the page Id from facebook album you want to use.
-# It is usually the page_id part of the album URL. 
-https://www.facebook.com/media/set/?set=a.369541803149826.<album_info>.<page_id>&type=3 
+FB_APP_ID = os.environ.get('FB_APP_ID')
+FB_APP_SECRET = os.environ.get('FB_APP_SECRET')
 
 ```
 
+Since this is secret information, we encourage to keep the secret out of source control. This also allows easy configuration on platforms like heroku. You can obtain the Facebook App ID and Secret by creating an app at [facebook for developers](developers.facebook.com)
 
-Once, done add a block into the django template where you want to use the plugin to work, preferably in
+
+Once done, add a block into the django template where you want to use the plugin to work, preferably in
 base.html:
 
 ```html
@@ -39,17 +40,15 @@ base.html:
 
 ## Usage:
 
-In order to use, add the plugin into the intended placeholder and add facebook album Id and Album name in the admin and save the plugin and page. Once done, you will have the gallery up and running for you. 
+In order to use, add the plugin into the intended placeholder and add facebook album Id in the admin and save the plugin and page. Once done, you will have the gallery up and running for you. 
 
 ### Finding Album ID:
 
-A facebook Album URL contains the information about the Page ID and Album ID, Here is how you calculate the Album ID:
+A facebook Album URL contains the information about the Album ID, here is how you get the Album ID:
 
-If URL is: https://www.facebook.com/media/set/?set=a.369541803149826.1073741825.125976107506398&type=3
+If URL is: https://www.facebook.com/pagename/photos/?tab=album&album_id=1234567890
 
-Your Album ID is: 125976107506398_1073741825 .
-
-Once you find album id of one album, find others is as easy as increasing the count by 1, as facebook assign new album by adding one at a time. So if you have another album, its album id must be 125976107506398_1073741826.
+Your Album ID is: 1234567890 .
 
 ## Scope:
 
