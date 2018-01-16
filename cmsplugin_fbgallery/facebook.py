@@ -16,7 +16,7 @@ try:
 except AttributeError:
     raise ImproperlyConfigured('FB_APP_ID and/or FB_APP_SECRET settings are not configured')
 
-facebook_url = 'https://graph.facebook.com/v2.7/%s/photos?access_token=%s&fields=picture,name,source&format=json&method=get'
+facebook_url = 'https://graph.facebook.com/v2.7/%s/photos?access_token=%s&limit=100&fields=picture,name,source&format=json&method=get'
 cache_expires = getattr(settings, 'CACHE_EXPIRES', 30)
 
 
