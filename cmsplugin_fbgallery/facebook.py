@@ -10,13 +10,23 @@ from django.template import defaultfilters
 
 logger = logging.getLogger(__name__)
 
-try:
-    app_id = settings.FB_APP_ID 
-    app_secret =  settings.FB_APP_SECRET
-except AttributeError:
-    raise ImproperlyConfigured('FB_APP_ID and/or FB_APP_SECRET settings are not configured')
+access_token = None
 
-facebook_url = 'https://graph.facebook.com/v2.7/%s/photos?access_token=%s&limit=100&fields=picture,name,source&format=json&method=get'
+try:
+    access_token = settings.FB_ACCESS_TOKEN
+except AttributeError:
+    pass
+
+if access_token is None:
+    try:
+        app_id = settings.FB_APP_ID
+        app_secret = settings.FB_APP_SECRET
+        access_token = app_id + '|' + app_secret
+
+    except AttributeError:
+        raise ImproperlyConfigured('FB_ACCESS_TOKEN or (FB_APP_ID and FB_APP_SECRET) settings are not configured')
+
+facebook_url = 'https://graph.facebook.com/v3.2/%s/photos?access_token=%s&limit=100&fields=picture,name,source&format=json&method=get'
 cache_expires = getattr(settings, 'CACHE_EXPIRES', 30)
 
 
@@ -26,11 +36,10 @@ def get_photos(album_id):
     if cache_expires > 0:
         data = cache.get(cachename)
     if data is None:
-        access_token = app_id + '|' + app_secret
         url = facebook_url % (album_id, access_token)
-        
+
         logger.debug('querying facebook to %s', url)
-        
+
         response = requests.get(url)
 
         if (response.status_code == 200):
